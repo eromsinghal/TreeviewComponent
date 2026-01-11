@@ -3,6 +3,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ITreeNode, DragItem } from './types';
 import { FaChevronRight, FaChevronDown, FaPlus, FaSpinner, FaEdit, FaTrash } from 'react-icons/fa';
 
+const Spinner = FaSpinner as React.FC<React.SVGProps<SVGSVGElement>>;
+
 interface TreeNodeProps {
   node: ITreeNode;
   level: number;
@@ -167,7 +169,14 @@ const TreeNode: React.FC<TreeNodeProps> = ({
               className="expand-toggle"
               onClick={() => onToggleExpand(node.id, isExpanded, node.children, level)}
             >
-              {isLoadingChildren ? <FaSpinner className="spinner" /> : (isExpanded ? <FaChevronDown /> : <FaChevronRight />)}
+{isLoadingChildren ? (
+  <Spinner className="spinner" />
+) : isExpanded ? (
+  <FaChevronDown />
+) : (
+  <FaChevronRight />
+)}
+
             </span>
           )}
 

@@ -1,0 +1,403 @@
+/* src/styles.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #fcfcfc;
+    /* Very light background */
+    color: #333;
+}
+
+.App {
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    /* Lighter, more subtle shadow */
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.tree-view-container {
+    padding: 15px;
+    min-height: 250px;
+    position: relative;
+    background-color: #fff;
+}
+
+.tree-view-empty-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-style: italic;
+    background-color: #f9f9f9;
+    border: 2px dashed #e0e0e0;
+    margin: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.tree-view-empty-message:hover {
+    background-color: #eff6ff;
+    border-color: #007bff;
+}
+
+/* --- Node Styling --- */
+.tree-node-wrapper {
+    position: relative;
+    /* Adjust these values to control indentation and line positions */
+    --indent-size: 30px;
+    /* Horizontal space for each level */
+    --vertical-line-offset: 15px;
+    /* Where the vertical line is drawn relative to the wrapper's left edge */
+    padding-left: calc(var(--level, 0) * var(--indent-size));
+}
+
+.tree-node {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e8e8e8;
+    /* Very light border */
+    border-radius: 8px;
+    margin: 5px 0;
+    padding: 6px 10px;
+    /* Reduced padding */
+    cursor: grab;
+    position: relative;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    z-index: 2;
+    /* Ensure node is above connecting lines */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    height: 40px;
+    /* Fixed height for consistent line drawing */
+    box-sizing: border-box;
+    /* Include padding and border in height */
+}
+
+.tree-node:hover {
+    background-color: #fcfcfc;
+    border-color: #dcdcdc;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.node-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    gap: 10px;
+    /* Spacing between elements in the node */
+}
+
+/* --- Expand/Collapse Toggle --- */
+.expand-toggle {
+    cursor: pointer;
+    font-size: 0.8em;
+    color: #b0b0b0;
+    /* Lighter grey */
+    min-width: 16px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: -5px;
+    /* Pull it slightly closer to the circle */
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    color: #888;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- Node Icon Circle (A, B, C, D) --- */
+.node-icon-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    font-size: 0.9em;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    /* Stronger shadow for the circle */
+    position: relative;
+    /* For the small white border effect */
+    background: linear-gradient(to bottom right, #fefefe, #e0e0e0);
+    /* Subtle gradient for depth */
+}
+
+/* Inner highlight effect for the circle */
+.node-icon-circle::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    /* Inner white border */
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+    /* Inner shadow for depth */
+}
+
+/* Colors based on the image: A is blue, others are green */
+.node-icon-circle.type-A {
+    background: linear-gradient(to bottom right, #007bff, #0056b3);
+    /* Blue for A */
+}
+
+.node-icon-circle.type-B,
+.node-icon-circle.type-C,
+.node-icon-circle.type-D,
+.node-icon-circle:not(.type-A) {
+    /* Default green for others, and fallback for any other type */
+    background: linear-gradient(to bottom right, #28a745, #1e7e34);
+    /* Green for B, C, D */
+}
+
+/* --- Node Label and Add Button Group --- */
+.node-label-actions {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    background-color: #f7f7f7;
+    /* Lighter grey background for the label/add section */
+    border-radius: 6px;
+    /* Rounded corners */
+    padding: 4px 8px;
+    /* Padding inside this box */
+    margin-right: 8px;
+    /* Space before edit/delete buttons */
+    border: 1px solid #eee;
+    /* Subtle border for the label/add section */
+}
+
+.node-name {
+    flex-grow: 1;
+    font-weight: 500;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.95em;
+}
+
+.node-edit-input {
+    border: 1px solid #007bff;
+    padding: 3px 6px;
+    /* Adjusted padding */
+    border-radius: 4px;
+    flex-grow: 1;
+    font-size: 0.95em;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    background-color: #fff;
+}
+
+.add-child-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999;
+    /* Grey plus icon */
+    font-size: 0.85em;
+    padding: 0 5px;
+    transition: color 0.2s ease;
+}
+
+.add-child-button:hover {
+    color: #555;
+}
+
+/* --- Other actions (Edit, Remove) - These were requirements but not in the image --- */
+.node-actions-right {
+    display: flex;
+    gap: 5px;
+    margin-left: auto;
+    /* Push to the right */
+    opacity: 0;
+    /* Hide by default */
+    transition: opacity 0.2s ease;
+}
+
+.tree-node:hover .node-actions-right {
+    opacity: 1;
+    /* Show on hover */
+}
+
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #b0b0b0;
+    font-size: 0.8em;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-button:hover {
+    background-color: #f0f0f0;
+    color: #666;
+}
+
+.icon-button.remove-button {
+    color: #dc3545;
+}
+
+.icon-button.remove-button:hover {
+    background-color: #f8d7da;
+    color: #a71d2a;
+}
+
+.add-root-node-button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #6c757d;
+    /* A bit darker grey for root add */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-root-node-button:hover {
+    background-color: #5a6268;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Connecting Lines --- */
+/* The line drawing is done using pseudo-elements on the wrapper for vertical lines,
+   and on the node itself for horizontal stubs. */
+
+.tree-node-wrapper {
+    position: relative;
+}
+
+/* Vertical lines for children levels */
+.tree-node-wrapper:not(.level-0)::before {
+    content: '';
+    position: absolute;
+    /* This positions the vertical line for the current child node */
+    left: calc(var(--level) * var(--indent-size) - var(--vertical-line-offset));
+    top: calc(-1 * var(--node-height) / 2 - 5px);
+    /* Start slightly above current node, adjust based on node height */
+    height: 100%;
+    /* Extends down to cover current node and potentially connect to next sibling */
+    width: 1px;
+    border-left: 1px dashed #cccccc;
+    /* Dotted line */
+    z-index: 1;
+}
+
+/* Horizontal stub line connecting to the node */
+.tree-node-wrapper .tree-node::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    /* This positions the horizontal line from the vertical line to the start of the node */
+    left: calc(-1 * var(--indent-size) + var(--vertical-line-offset));
+    width: calc(var(--indent-size) - var(--vertical-line-offset) - 5px);
+    /* Length of the horizontal stub */
+    height: 1px;
+    border-top: 1px dashed #cccccc;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+/* Adjustment for the last child in a sibling group: shorten its vertical line */
+.tree-node-wrapper:last-child:not(.level-0)::before {
+    height: calc(50% + 5px);
+    /* Line goes only to the middle of the last node */
+}
+
+/* For root-level nodes (level-0) that have children, draw a vertical line downwards */
+.tree-node-wrapper.level-0.expanded .tree-node::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    /* Start from the middle of the root node */
+    left: calc(var(--indent-size) - var(--vertical-line-offset));
+    /* Align with children's vertical line start */
+    height: calc(100% - 20px);
+    /* Extends downwards, adjust as needed */
+    width: 1px;
+    border-left: 1px dashed #cccccc;
+    z-index: 1;
+}
+
+/* Special case: When a parent node is expanded, its children are rendered.
+   The above rule draws a line from the *parent* down.
+   The child's ::before draws the line *up* from its level.
+   This can create a discontinuity. A cleaner solution would involve
+   a dedicated wrapper around children to draw connecting lines.
+   This pure CSS approximation is the best we can do without that. */
+
+/* --- Drag & Drop Indicators --- */
+.tree-node.is-being-dragged {
+    opacity: 0.6;
+    border: 1px dashed #a0d9ff;
+    background-color: #e6f7ff;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+}
+
+.drop-indicator {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #007bff;
+    z-index: 10;
+    pointer-events: none;
+    border-radius: 1px;
+    animation: pulse-drop 1s infinite alternate;
+}
+
+.drop-indicator-above {
+    top: -1px;
+}
+
+.drop-indicator-below {
+    bottom: -1px;
+}
+
+.tree-node.drop-indicator-child {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    background-color: #e6f7ff;
+}
+
+@keyframes pulse-drop {
+    from {
+        opacity: 0.7;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
